@@ -8,14 +8,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-// NOTA: Para que este código funcione, debes tener definidas las clases en los namespaces:
-// SistemaUniversidad.Personas, SistemaUniversidad.Sistema, SistemaUniversidad.Personas.Repositorio, etc.
-// También se asume la existencia de la enumeración TipoContrato y la clase Validador.
+// NOTA: Se asume la existencia de TipoContrato, Validador, AnalizadorReflection, TiposEspeciales y demás clases.
 
 public class ProgramaPrincipal
 {
     // Instancias de los gestores y repositorios
-    // El 'Cast<T>()' es necesario porque Repositorio<T> retorna IIdentificable, no el tipo concreto T
     private static readonly Repositorio<Estudiante> _repoEstudiantes = new Repositorio<Estudiante>();
     private static readonly Repositorio<Profesor> _repoProfesores = new Repositorio<Profesor>();
     private static readonly Repositorio<Curso> _repoCursos = new Repositorio<Curso>();
@@ -33,6 +30,11 @@ public class ProgramaPrincipal
         bool continuar = true;
         // Establecer la codificación para mostrar tildes y caracteres especiales correctamente
         Console.OutputEncoding = System.Text.Encoding.UTF8;
+
+        // --- INICIO: Arte ASCII ---
+        MostrarAsciiUniversidad();
+        PausarConsola();
+        // -------------------------
 
         while (continuar)
         {
@@ -53,26 +55,49 @@ public class ProgramaPrincipal
                     case "S":
                     case "8":
                         continuar = false;
+                        // Color para Salir del Sistema (Amarillo)
                         MostrarMensaje("Saliendo del sistema. ¡Hasta pronto!", ConsoleColor.Yellow);
                         break;
                     default:
                         MostrarMensaje("Opción no válida. Intente de nuevo.", ConsoleColor.Red);
-                        PausarConsola(); // Pausa después de un error
+                        PausarConsola();
                         break;
                 }
             }
             catch (Exception ex)
             {
-                // Manejo de excepción general para evitar que el programa se cierre
+                // Manejo de excepción general
                 MostrarMensaje($"\nERROR INESPERADO: {ex.Message}", ConsoleColor.Red);
                 PausarConsola();
             }
         }
     }
 
-    // ==============
-    // MÉTODOS DE UI 
-    // ==============
+    // =========================================================================
+    // MÉTODOS DE UI Y UTILIDAD
+    // =========================================================================
+
+    private static void MostrarAsciiUniversidad()
+    {
+        Console.Clear();
+        Console.ForegroundColor = ConsoleColor.White;
+        Console.WriteLine("==================================================");
+        Console.WriteLine("    Universidad Central del Este (UCE)");
+        Console.WriteLine("==================================================");
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.WriteLine(@"");
+        Console.WriteLine(@"          ___          ___");
+        Console.WriteLine(@"         |   |        |   |");
+        Console.WriteLine(@"         | U |________| C |");
+        Console.WriteLine(@"         |   |  -==-  |   |");
+        Console.WriteLine(@"         |___| |####| |___|");
+        Console.WriteLine(@"         | - | |####| | - |");
+        Console.WriteLine(@"         |___| |####| |___|");
+        Console.WriteLine(@"         /  U C E  |  \ S G A \");
+        Console.WriteLine(@"        /___________|___________\");
+        Console.ResetColor();
+    }
+
 
     private static void MostrarMenuPrincipal()
     {
@@ -80,15 +105,13 @@ public class ProgramaPrincipal
         Console.WriteLine(new string('=', 50));
         MostrarMensaje("      SISTEMA DE GESTIÓN ACADÉMICA UCE      ", ConsoleColor.Cyan);
         Console.WriteLine(new string('=', 50));
-        MostrarMensaje("1. Gestionar Estudiantes ", ConsoleColor.Green);
-        MostrarMensaje("2. Gestionar Profesores ", ConsoleColor.Green);
-        MostrarMensaje("3. Gestionar Cursos ", ConsoleColor.Green);
-        Console.WriteLine("--------------------------------------------------");
-        MostrarMensaje("4. Matricular Estudiante en Curso", ConsoleColor.Yellow);
-        MostrarMensaje("5. Registrar Calificaciones", ConsoleColor.Yellow);
-        MostrarMensaje("6. Ver Reportes", ConsoleColor.Magenta);
-        MostrarMensaje("7. Análisis con Reflection", ConsoleColor.Magenta);
-        Console.WriteLine("--------------------------------------------------");
+        MostrarMensaje("1. Gestionar Estudiantes ", ConsoleColor.White);
+        MostrarMensaje("2. Gestionar Profesores ", ConsoleColor.White);
+        MostrarMensaje("3. Gestionar Cursos ", ConsoleColor.White);
+        MostrarMensaje("4. Matricular Estudiante en Curso", ConsoleColor.White);
+        MostrarMensaje("5. Registrar Calificaciones", ConsoleColor.White);
+        MostrarMensaje("6. Ver Reportes", ConsoleColor.White);
+        MostrarMensaje("7. Análisis con Reflection", ConsoleColor.White);
         MostrarMensaje("8. Salir", ConsoleColor.Red);
         Console.WriteLine(new string('=', 50));
         Console.Write("Seleccione una opción: ");
@@ -114,9 +137,10 @@ public class ProgramaPrincipal
         return Console.ReadLine();
     }
 
-    // ----------------------
-    // GESTIÓN DE ESTUDIANTES
-    // ----------------------
+    // =========================================================================
+    // 1. GESTIÓN DE ESTUDIANTES (CRUD con colores)
+    // =========================================================================
+
     private static void GestionarEstudiantes()
     {
         bool seguirGestionando = true;
@@ -124,11 +148,11 @@ public class ProgramaPrincipal
         {
             Console.Clear();
             MostrarMensaje("--- GESTIÓN DE ESTUDIANTES (CRUD) ---", ConsoleColor.Blue);
-            Console.WriteLine("1. Agregar Nuevo Estudiante ");
-            Console.WriteLine("2. Listar Todos los Estudiantes ");
-            Console.WriteLine("3. Buscar Estudiante por ID ");
-            Console.WriteLine("4. Modificar Estudiante");
-            Console.WriteLine("5. Eliminar Estudiante ");
+            Console.WriteLine("1. Agregar Nuevo Estudiante (VERDE)"); // Agregar
+            Console.WriteLine("2. Listar Todos los Estudiantes (AMARILLO)"); // Leer
+            Console.WriteLine("3. Buscar Estudiante por ID (AMARILLO)"); // Leer
+            Console.WriteLine("4. Modificar Estudiante (AZUL)"); // Actualizar
+            Console.WriteLine("5. Eliminar Estudiante (ROJO)"); // Eliminar
             MostrarMensaje("6. <- Regresar al Menú Principal", ConsoleColor.DarkGray);
             Console.WriteLine(new string('-', 40));
             Console.Write("Opción de gestión: ");
@@ -170,10 +194,8 @@ public class ProgramaPrincipal
             string carrera = SolicitarEntrada("Carrera: ");
             string matricula = SolicitarEntrada("Matrícula (Ej: M2024123): ");
 
-            // Asumiendo que las clases Estudiante y Profesor, y el enum TipoContrato están definidos
             var nuevoEstudiante = new Estudiante(id, nombre, apellido, fechaNac, carrera, matricula);
 
-            // Validación por Atributos 
             var errores = Validador.ValidarInstancia(nuevoEstudiante);
             if (errores.Any())
             {
@@ -183,6 +205,7 @@ public class ProgramaPrincipal
             }
 
             _repoEstudiantes.Agregar(nuevoEstudiante);
+            // Éxito en VERDE
             MostrarMensaje($"Estudiante {nombre} {apellido} agregado con éxito.", ConsoleColor.Green);
         }
         catch (ArgumentException ex)
@@ -206,7 +229,6 @@ public class ProgramaPrincipal
             Console.WriteLine(new string('-', 70));
             foreach (var e in estudiantes)
             {
-                
                 Console.WriteLine($"{e.Identificacion} | {e.Nombre} {e.Apellido} | {e.Edad} | {e.Carrera} | {e.NumeroMatricula}");
             }
             Console.WriteLine(new string('-', 70));
@@ -227,7 +249,7 @@ public class ProgramaPrincipal
         if (estudiante != null)
         {
             MostrarMensaje($"Estudiante Encontrado:", ConsoleColor.Cyan);
-            Console.WriteLine(estudiante.ToString()); // Usa el ToString() sobrescrito
+            Console.WriteLine(estudiante.ToString());
             return estudiante;
         }
         else
@@ -239,7 +261,7 @@ public class ProgramaPrincipal
 
     private static void ModificarEstudiante()
     {
-        MostrarMensaje("\n--- MODIFICAR ESTUDIANTE ---", ConsoleColor.Yellow);
+        MostrarMensaje("\n--- MODIFICAR ESTUDIANTE ---", ConsoleColor.Blue);
         string id = SolicitarEntrada("ID del Estudiante a modificar: ");
 
         var estudiante = _repoEstudiantes.BuscarPorId(id) as Estudiante;
@@ -252,7 +274,6 @@ public class ProgramaPrincipal
 
         MostrarMensaje($"Modificando Estudiante: {estudiante.Nombre} {estudiante.Apellido}", ConsoleColor.Cyan);
 
-        
         string nuevoNombre = SolicitarEntrada($"Nombre actual ({estudiante.Nombre}): ");
         if (!string.IsNullOrWhiteSpace(nuevoNombre)) estudiante.Nombre = nuevoNombre;
 
@@ -262,7 +283,6 @@ public class ProgramaPrincipal
         string nuevaMatricula = SolicitarEntrada($"Matrícula actual ({estudiante.NumeroMatricula}): ");
         if (!string.IsNullOrWhiteSpace(nuevaMatricula)) estudiante.NumeroMatricula = nuevaMatricula;
 
-        // Validación por Atributos después de modificar 
         var errores = Validador.ValidarInstancia(estudiante);
         if (errores.Any())
         {
@@ -271,7 +291,8 @@ public class ProgramaPrincipal
             return;
         }
 
-        MostrarMensaje($"Estudiante con ID {id} modificado exitosamente.", ConsoleColor.Green);
+        // Éxito en AZUL
+        MostrarMensaje($"Estudiante con ID {id} modificado exitosamente.", ConsoleColor.Blue);
     }
 
     private static void EliminarEstudiante()
@@ -282,7 +303,8 @@ public class ProgramaPrincipal
         try
         {
             _repoEstudiantes.Eliminar(id);
-            MostrarMensaje($"Estudiante con ID {id} eliminado exitosamente.", ConsoleColor.Green);
+            // Éxito en ROJO
+            MostrarMensaje($"Estudiante con ID {id} eliminado exitosamente.", ConsoleColor.Red);
         }
         catch (KeyNotFoundException)
         {
@@ -294,9 +316,10 @@ public class ProgramaPrincipal
         }
     }
 
-    // ----------------------
-    // GESTIÓN DE PROFESORES 
-    // ----------------------
+    // =========================================================================
+    // 2. GESTIÓN DE PROFESORES (CRUD con colores)
+    // =========================================================================
+
     private static void GestionarProfesores()
     {
         bool seguirGestionando = true;
@@ -304,11 +327,11 @@ public class ProgramaPrincipal
         {
             Console.Clear();
             MostrarMensaje("--- GESTIÓN DE PROFESORES  ---", ConsoleColor.Blue);
-            Console.WriteLine("1. Agregar Nuevo Profesor ");
-            Console.WriteLine("2. Listar Todos los Profesores ");
-            Console.WriteLine("3. Buscar Profesor por ID ");
-            Console.WriteLine("4. Modificar Profesor ");
-            Console.WriteLine("5. Eliminar Profesor");
+            Console.WriteLine("1. Agregar Nuevo Profesor (VERDE)");
+            Console.WriteLine("2. Listar Todos los Profesores (AMARILLO)");
+            Console.WriteLine("3. Buscar Profesor por ID (AMARILLO)");
+            Console.WriteLine("4. Modificar Profesor (AZUL)");
+            Console.WriteLine("5. Eliminar Profesor (ROJO)");
             MostrarMensaje("6. <- Regresar al Menú Principal", ConsoleColor.DarkGray);
             Console.WriteLine(new string('-', 40));
             Console.Write("Opción de gestión: ");
@@ -319,11 +342,11 @@ public class ProgramaPrincipal
                 {
                     switch (opcion)
                     {
-                        case 1: MostrarMensaje("Implementar: Agregar Profesor...", ConsoleColor.Yellow); break;
+                        case 1: AgregarProfesor(); break;
                         case 2: ListarProfesores(false); break;
-                        case 3: MostrarMensaje("Implementar: Buscar Profesor...", ConsoleColor.Yellow); break;
-                        case 4: MostrarMensaje("Implementar: Modificar Profesor...", ConsoleColor.Yellow); break;
-                        case 5: MostrarMensaje("Implementar: Eliminar Profesor...", ConsoleColor.Yellow); break;
+                        case 3: BuscarProfesor(); break;
+                        case 4: ModificarProfesor(); break;
+                        case 5: EliminarProfesor(); break;
                         case 6: seguirGestionando = false; break;
                         default: MostrarMensaje("Opción no válida.", ConsoleColor.Red); break;
                     }
@@ -334,6 +357,51 @@ public class ProgramaPrincipal
                 }
                 if (seguirGestionando) PausarConsola();
             }
+        }
+    }
+
+    private static void AgregarProfesor()
+    {
+        MostrarMensaje("\n--- AGREGAR PROFESOR ---", ConsoleColor.Green);
+        try
+        {
+            string id = SolicitarEntrada("ID (Ej: P123): ");
+            string nombre = SolicitarEntrada("Nombre: ");
+            string apellido = SolicitarEntrada("Apellido: ");
+            string fechaStr = SolicitarEntrada("Fecha Nacimiento (AAAA-MM-DD, edad >= 25): ");
+            DateTime fechaNac = DateTime.Parse(fechaStr);
+            string departamento = SolicitarEntrada("Departamento: ");
+
+            MostrarMensaje("Tipo de Contrato (0=TiempoCompleto, 1=MedioTiempo, 2=PorHoras):", ConsoleColor.White);
+            if (!int.TryParse(SolicitarEntrada("Opción: "), out int contratoInt) || !Enum.IsDefined(typeof(TipoContrato), contratoInt))
+            {
+                throw new ArgumentException("Opción de contrato no válida.");
+            }
+            TipoContrato tipoContrato = (TipoContrato)contratoInt;
+
+            string salarioStr = SolicitarEntrada("Salario Base: ");
+            if (!decimal.TryParse(salarioStr, out decimal salarioBase))
+            {
+                throw new FormatException("Formato de salario inválido.");
+            }
+
+            var nuevoProfesor = new Profesor(id, nombre, apellido, fechaNac, departamento, tipoContrato, salarioBase);
+
+            var errores = Validador.ValidarInstancia(nuevoProfesor);
+            if (errores.Any())
+            {
+                MostrarMensaje("Fallo de Validación por Atributos:", ConsoleColor.Red);
+                errores.ForEach(e => Console.WriteLine($" - {e}"));
+                return;
+            }
+
+            _repoProfesores.Agregar(nuevoProfesor);
+            // Éxito en VERDE
+            MostrarMensaje($"Profesor {nombre} {apellido} agregado con éxito.", ConsoleColor.Green);
+        }
+        catch (Exception ex)
+        {
+            MostrarMensaje($"Error al agregar profesor: {ex.Message}", ConsoleColor.Red);
         }
     }
 
@@ -349,7 +417,6 @@ public class ProgramaPrincipal
 
             foreach (var p in profesores)
             {
-                
                 Console.WriteLine($"{p.Identificacion} | {p.Nombre} {p.Apellido} | {p.Departamento} | {p.TipoContrato} | {p.SalarioBase:C}");
             }
             Console.WriteLine(new string('-', 70));
@@ -360,21 +427,96 @@ public class ProgramaPrincipal
         }
     }
 
-    // ------------------
-    // GESTIÓN DE CURSOS 
-    // ------------------
+    private static Profesor BuscarProfesor()
+    {
+        MostrarMensaje("\n--- BUSCAR PROFESOR ---", ConsoleColor.Yellow);
+        string id = SolicitarEntrada("ID del Profesor a buscar: ");
+
+        var profesor = _repoProfesores.BuscarPorId(id) as Profesor;
+
+        if (profesor != null)
+        {
+            MostrarMensaje($"Profesor Encontrado:", ConsoleColor.Cyan);
+            Console.WriteLine(profesor.ToString());
+            return profesor;
+        }
+        else
+        {
+            MostrarMensaje($"Error: Profesor con ID '{id}' no encontrado.", ConsoleColor.Red);
+            return null;
+        }
+    }
+
+    private static void ModificarProfesor()
+    {
+        MostrarMensaje("\n--- MODIFICAR PROFESOR ---", ConsoleColor.Blue);
+        string id = SolicitarEntrada("ID del Profesor a modificar: ");
+
+        var profesor = _repoProfesores.BuscarPorId(id) as Profesor;
+
+        if (profesor == null)
+        {
+            MostrarMensaje($"Error: Profesor con ID '{id}' no encontrado.", ConsoleColor.Red);
+            return;
+        }
+
+        MostrarMensaje($"Modificando Profesor: {profesor.Nombre} {profesor.Apellido}", ConsoleColor.Cyan);
+
+        string nuevoDepartamento = SolicitarEntrada($"Departamento actual ({profesor.Departamento}): ");
+        if (!string.IsNullOrWhiteSpace(nuevoDepartamento)) profesor.Departamento = nuevoDepartamento;
+
+        string nuevoSalarioStr = SolicitarEntrada($"Salario Base actual ({profesor.SalarioBase:C}): ");
+        if (decimal.TryParse(nuevoSalarioStr, out decimal nuevoSalario)) profesor.SalarioBase = nuevoSalario;
+
+        var errores = Validador.ValidarInstancia(profesor);
+        if (errores.Any())
+        {
+            MostrarMensaje("Fallo de Validación por Atributos (Cambios no guardados):", ConsoleColor.Red);
+            return;
+        }
+
+        // Éxito en AZUL
+        MostrarMensaje($"Profesor con ID {id} modificado exitosamente.", ConsoleColor.Blue);
+    }
+
+    private static void EliminarProfesor()
+    {
+        MostrarMensaje("\n--- ELIMINAR PROFESOR ---", ConsoleColor.Red);
+        string id = SolicitarEntrada("ID del Profesor a eliminar: ");
+
+        try
+        {
+            _repoProfesores.Eliminar(id);
+            // Éxito en ROJO
+            MostrarMensaje($"Profesor con ID {id} eliminado exitosamente.", ConsoleColor.Red);
+        }
+        catch (KeyNotFoundException)
+        {
+            MostrarMensaje($"Error: No se puede eliminar. Profesor con ID '{id}' no encontrado.", ConsoleColor.Red);
+        }
+        catch (Exception ex)
+        {
+            MostrarMensaje($"Error al eliminar: {ex.Message}", ConsoleColor.Red);
+        }
+    }
+
+    // =========================================================================
+    // 3. GESTIÓN DE CURSOS (CRUD con colores)
+    // =========================================================================
+
     private static void GestionarCursos()
     {
         bool seguirGestionando = true;
-        while (seguirGestionando) 
+        while (seguirGestionando)
         {
             Console.Clear();
             MostrarMensaje("--- GESTIÓN DE CURSOS  ---", ConsoleColor.Blue);
-            Console.WriteLine("1. Agregar Nuevo Curso ");
-            Console.WriteLine("2. Listar Todos los Cursos");
-            Console.WriteLine("3. Asignar Profesor");
-            Console.WriteLine("4. Eliminar ");
-            MostrarMensaje("5. <- Regresar al Menú Principal", ConsoleColor.DarkGray);
+            Console.WriteLine("1. Agregar Nuevo Curso (VERDE)");
+            Console.WriteLine("2. Listar Todos los Cursos (AMARILLO)");
+            Console.WriteLine("3. Modificar Curso (AZUL)");
+            Console.WriteLine("4. Asignar Profesor (AZUL)");
+            Console.WriteLine("5. Eliminar Curso (ROJO)");
+            MostrarMensaje("6. <- Regresar al Menú Principal", ConsoleColor.DarkGray);
             Console.WriteLine(new string('-', 40));
             Console.Write("Opción de gestión: ");
 
@@ -384,11 +526,12 @@ public class ProgramaPrincipal
                 {
                     switch (opcion)
                     {
-                        case 1: MostrarMensaje("Implementar: Agregar Curso...", ConsoleColor.Yellow); break;
+                        case 1: AgregarCurso(); break;
                         case 2: ListarCursos(false); break;
-                        case 3: MostrarMensaje("Implementar: Asignar Profesor...", ConsoleColor.Yellow); break;
-                        case 4: MostrarMensaje("Implementar: Eliminar Curso...", ConsoleColor.Yellow); break;
-                        case 5: seguirGestionando = false; break;
+                        case 3: ModificarCurso(); break;
+                        case 4: AsignarProfesorACurso(); break;
+                        case 5: EliminarCurso(); break;
+                        case 6: seguirGestionando = false; break;
                         default: MostrarMensaje("Opción no válida.", ConsoleColor.Red); break;
                     }
                 }
@@ -401,6 +544,40 @@ public class ProgramaPrincipal
         }
     }
 
+    private static void AgregarCurso()
+    {
+        MostrarMensaje("\n--- AGREGAR CURSO ---", ConsoleColor.Green);
+        try
+        {
+            string codigo = SolicitarEntrada("Código del Curso (Ej: CS101): ");
+            string nombre = SolicitarEntrada("Nombre del Curso: ");
+            string creditosStr = SolicitarEntrada("Créditos: ");
+
+            if (!int.TryParse(creditosStr, out int creditos))
+            {
+                throw new FormatException("Formato de créditos inválido.");
+            }
+
+            var nuevoCurso = new Curso(codigo, nombre, creditos, null);
+
+            var errores = Validador.ValidarInstancia(nuevoCurso);
+            if (errores.Any())
+            {
+                MostrarMensaje("Fallo de Validación por Atributos:", ConsoleColor.Red);
+                errores.ForEach(e => Console.WriteLine($" - {e}"));
+                return;
+            }
+
+            _repoCursos.Agregar(nuevoCurso);
+            // Éxito en VERDE
+            MostrarMensaje($"Curso '{nombre}' agregado con éxito.", ConsoleColor.Green);
+        }
+        catch (Exception ex)
+        {
+            MostrarMensaje($"Error al agregar curso: {ex.Message}", ConsoleColor.Red);
+        }
+    }
+
     private static void ListarCursos(bool pausa)
     {
         Console.Clear();
@@ -410,7 +587,7 @@ public class ProgramaPrincipal
 
         if (!cursos.Any())
         {
-            MostrarMensaje("No hay cursos registrados. Considere agregar uno.", ConsoleColor.Yellow);
+            MostrarMensaje("No hay cursos registrados.", ConsoleColor.Yellow);
         }
         else
         {
@@ -429,20 +606,115 @@ public class ProgramaPrincipal
         }
     }
 
-    // ===========================
-    // MÉTODOS DEL MENÚ PRINCIPAL
-    // ===========================
+    private static void ModificarCurso()
+    {
+        MostrarMensaje("\n--- MODIFICAR CURSO ---", ConsoleColor.Blue);
+        string codigo = SolicitarEntrada("Código del Curso a modificar: ");
+
+        var curso = _repoCursos.BuscarPorId(codigo) as Curso;
+
+        if (curso == null)
+        {
+            MostrarMensaje($"Error: Curso con código '{codigo}' no encontrado.", ConsoleColor.Red);
+            return;
+        }
+
+        MostrarMensaje($"Modificando Curso: {curso.Nombre}", ConsoleColor.Cyan);
+
+        string nuevoNombre = SolicitarEntrada($"Nombre actual ({curso.Nombre}): ");
+        if (!string.IsNullOrWhiteSpace(nuevoNombre)) curso.Nombre = nuevoNombre;
+
+        string creditosStr = SolicitarEntrada($"Créditos actuales ({curso.Creditos}): ");
+
+        if (int.TryParse(creditosStr, out int nuevosCreditos))
+        {
+            curso.Creditos = nuevosCreditos;
+        }
+        else if (!string.IsNullOrWhiteSpace(creditosStr))
+        {
+            MostrarMensaje("Advertencia: Créditos no modificados. Ingrese un número entero válido.", ConsoleColor.Yellow);
+        }
+
+        var errores = Validador.ValidarInstancia(curso);
+        if (errores.Any())
+        {
+            MostrarMensaje("Fallo de Validación por Atributos (Cambios no guardados):", ConsoleColor.Red);
+            errores.ForEach(e => Console.WriteLine($" - {e}"));
+            return;
+        }
+
+        // Éxito en AZUL
+        MostrarMensaje($"Curso con código {codigo} modificado exitosamente.", ConsoleColor.Blue);
+    }
+
+    private static void AsignarProfesorACurso()
+    {
+        MostrarMensaje("\n--- ASIGNAR PROFESOR A CURSO ---", ConsoleColor.Blue);
+        string codigoCurso = SolicitarEntrada("Código del Curso: ");
+        string idProfesor = SolicitarEntrada("ID del Profesor a asignar (Dejar vacío para quitar): ");
+
+        var curso = _repoCursos.BuscarPorId(codigoCurso) as Curso;
+        if (curso == null)
+        {
+            MostrarMensaje($"Error: Curso con código '{codigoCurso}' no encontrado.", ConsoleColor.Red);
+            return;
+        }
+
+        Profesor profesor = null;
+        string mensajeAsignacion = "quitado";
+
+        if (!string.IsNullOrWhiteSpace(idProfesor))
+        {
+            profesor = _repoProfesores.BuscarPorId(idProfesor) as Profesor;
+            if (profesor == null)
+            {
+                MostrarMensaje($"Error: Profesor con ID '{idProfesor}' no encontrado.", ConsoleColor.Red);
+                return;
+            }
+            mensajeAsignacion = $"asignado ({profesor.Nombre})";
+        }
+
+        curso.ProfesorAsignado = profesor;
+        // Éxito en AZUL
+        MostrarMensaje($"Profesor {mensajeAsignacion} al curso {curso.Nombre}.", ConsoleColor.Blue);
+    }
+
+    private static void EliminarCurso()
+    {
+        MostrarMensaje("\n--- ELIMINAR CURSO ---", ConsoleColor.Red);
+        string id = SolicitarEntrada("Código del Curso a eliminar: ");
+
+        try
+        {
+            _repoCursos.Eliminar(id);
+            // Éxito en ROJO
+            MostrarMensaje($"Curso con código {id} eliminado exitosamente.", ConsoleColor.Red);
+        }
+        catch (KeyNotFoundException)
+        {
+            MostrarMensaje($"Error: No se puede eliminar. Curso con código '{id}' no encontrado.", ConsoleColor.Red);
+        }
+        catch (Exception ex)
+        {
+            MostrarMensaje($"Error al eliminar: {ex.Message}", ConsoleColor.Red);
+        }
+    }
+
+    // =========================================================================
+    // 4. MÉTODOS DEL MENÚ PRINCIPAL (Matrícula, Calificaciones, Reportes, Reflection)
+    // =========================================================================
 
     private static void MatricularEstudianteEnCurso()
     {
         Console.Clear();
-        MostrarMensaje("--- MATRICULAR ESTUDIANTE ---", ConsoleColor.Yellow);
+        MostrarMensaje("--- MATRICULAR ESTUDIANTE ---", ConsoleColor.Green);
         string idEstudiante = SolicitarEntrada("ID Estudiante: ");
         string codigoCurso = SolicitarEntrada("Código Curso: ");
 
         try
         {
             _gestorMatriculas.MatricularEstudiante(idEstudiante, codigoCurso);
+            // Éxito en VERDE
             MostrarMensaje("Matrícula realizada con éxito.", ConsoleColor.Green);
         }
         catch (InvalidOperationException ex)
@@ -458,14 +730,12 @@ public class ProgramaPrincipal
     private static void RegistrarCalificaciones()
     {
         Console.Clear();
-        MostrarMensaje("--- REGISTRAR CALIFICACIÓN ---", ConsoleColor.Yellow);
+        MostrarMensaje("--- REGISTRAR CALIFICACIÓN ---", ConsoleColor.Blue);
 
         string idEstudiante = SolicitarEntrada("ID Estudiante: ");
         string codigoCurso = SolicitarEntrada("Código Curso: ");
         string entradaCalificacion = SolicitarEntrada("Calificación (0-10): ");
 
-        // Uso de TiposEspeciales.ParsearCalificacion 
-        // Se asume la existencia de la clase TiposEspeciales
         decimal? calificacion = TiposEspeciales.ParsearCalificacion(entradaCalificacion);
 
         if (!calificacion.HasValue)
@@ -477,8 +747,10 @@ public class ProgramaPrincipal
         try
         {
             _gestorMatriculas.AgregarCalificacion(idEstudiante, codigoCurso, calificacion.Value);
-            MostrarMensaje($"Calificación {calificacion.Value} registrada con éxito.", ConsoleColor.Green);
-            
+            // Éxito en AZUL
+            MostrarMensaje($"Calificación {calificacion.Value} registrada con éxito.", ConsoleColor.Blue);
+
+            // Demostración de Boxing/Unboxing (Punto 5)
             object objCalificacion = calificacion.Value; // Boxing
             decimal calDesboxeada = (decimal)objCalificacion; // Unboxing
             Console.WriteLine($"[DEBUG P5] Calificación boxeda/desboxeada: {calDesboxeada}");
@@ -498,20 +770,16 @@ public class ProgramaPrincipal
         Console.Clear();
         MostrarMensaje("--- REPORTES Y ESTADÍSTICAS (LINQ) ---", ConsoleColor.Magenta);
 
-        // 1. Reporte Individual 
+        // 1. Reporte Individual
         string idEstudiante = SolicitarEntrada("Ingrese ID del Estudiante para Reporte: ");
-        // Se asume que GenerarReporteEstudiante retorna un string formateado
         Console.WriteLine("\n" + _gestorMatriculas.GenerarReporteEstudiante(idEstudiante));
 
-        // 2. Mostrar Top 10 Estudiantes 
-        Console.WriteLine("\n** TOP 10 ESTUDIANTES **");
-        // Se asume que ObtenerTop10Estudiantes retorna una lista de objetos anónimos o tuplas
+        MostrarMensaje("\n** TOP 10 ESTUDIANTES **", ConsoleColor.Cyan);
         _gestorMatriculas.ObtenerTop10Estudiantes().ForEach(item =>
             Console.WriteLine($"- {item.Estudiante.Nombre} {item.Estudiante.Apellido} | Promedio: {item.Promedio:F2}")
         );
 
-        // 3. Mostrar Estadísticas por Carrera 
-        Console.WriteLine("\n** ESTADÍSTICAS POR CARRERA **");
+        MostrarMensaje("\n** ESTADÍSTICAS POR CARRERA **", ConsoleColor.Cyan);
         _gestorMatriculas.ObtenerEstadisticasPorCarrera().Cast<dynamic>().ToList().ForEach(stat =>
             Console.WriteLine($"- {stat.Carrera} | Cantidad: {stat.CantidadEstudiantes} | Promedio: {stat.PromedioGeneral:F2}")
         );
@@ -520,16 +788,13 @@ public class ProgramaPrincipal
     private static void AnalisisReflection()
     {
         Console.Clear();
-        MostrarMensaje("--- ANÁLISIS DE TIPOS CON REFLECTION  ---", ConsoleColor.Magenta);
+        MostrarMensaje("--- ANÁLISIS DE TIPOS CON REFLECTION ---", ConsoleColor.Magenta);
 
-        // Análisis de la clase Estudiante
         MostrarMensaje("\nANÁLISIS: Estudiante", ConsoleColor.Yellow);
         AnalizadorReflection.MostrarPropiedades(typeof(Estudiante));
         AnalizadorReflection.MostrarMetodos(typeof(Estudiante));
 
-        // Demostrar creación dinámica de un Curso
         MostrarMensaje("\nDemostración de Creación Dinámica de Curso:", ConsoleColor.Cyan);
-        // Parámetros para el constructor: (string codigo, string nombre, int creditos, Profesor profesorAsignado)
         object[] paramsCurso = new object[] { "DYN01", "Curso Dinámico", 3, null };
         object cursoDinamico = AnalizadorReflection.CrearInstanciaDinamica(typeof(Curso), paramsCurso);
 
@@ -543,78 +808,76 @@ public class ProgramaPrincipal
         }
     }
 
-    // -- DATOS DE PRUEBA 
+    // =========================================================================
+    // 5. DATOS DE PRUEBA
+    // =========================================================================
+
     private static void CargarDatosDePruebaIniciales()
     {
         var random = new Random();
-        
+
         string[] nombres = { "Ana", "Luis", "Marta", "David", "Sofía", "Carlos", "Elena", "Pedro", "Laura", "Javier", "Diana", "Miguel", "Andrea", "Samuel", "Valeria" };
         string[] apellidos = { "Gómez", "Pérez", "Rojas", "López", "Mora", "Castro", "Vargas", "Ruiz", "Hernández", "Díaz", "Navarro", "Flores" };
         string[] carreras = { "Ing. Sistemas", "Literatura", "Arquitectura", "Biología", "Matemáticas", "Derecho", "Medicina" };
         string[] departamentos = { "Tecnología", "Humanidades", "Ciencias Exactas", "Ciencias de la Salud", "Diseño" };
 
-        // Contadores para ID
         int contadorProfesores = 1;
         int contadorEstudiantes = 1;
         int contadorCursos = 1;
 
-        
         var profesores = new List<Profesor>();
         var estudiantes = new List<Estudiante>();
         var cursos = new List<Curso>();
 
         try
         {
-            
+            // 1. GENERAR PROFESORES
             for (int i = 0; i < 5; i++)
             {
                 var p = new Profesor(
-                    // 
                     $"P{contadorProfesores++}",
                     nombres[i],
                     apellidos[random.Next(apellidos.Length)],
                     new DateTime(1980 - i, 5, 1),
                     departamentos[i % 4],
-                    TipoContrato.TiempoCompleto,
+                    (TipoContrato)(i % 3),
                     50000m + random.Next(30000)
                 );
                 _repoProfesores.Agregar(p);
                 profesores.Add(p);
             }
 
-            
+            // 2. GENERAR ESTUDIANTES
             for (int i = 0; i < 15; i++)
             {
-                int anoNac = 2005 - random.Next(5); 
+                int anoNac = 2005 - random.Next(5);
                 var e = new Estudiante(
-                    
                     $"E{contadorEstudiantes++}",
                     nombres[i % nombres.Length],
                     apellidos[random.Next(apellidos.Length)],
                     new DateTime(anoNac, random.Next(1, 12), random.Next(1, 28)),
                     carreras[i % carreras.Length],
-                    // Matrícula M2024[ID]
                     $"M2024{contadorEstudiantes - 1:D2}"
                 );
                 _repoEstudiantes.Agregar(e);
                 estudiantes.Add(e);
             }
 
-           
+            // 3. GENERAR CURSOS
             for (int i = 0; i < 10; i++)
             {
                 string codigo = $"CS{contadorCursos++}";
                 var c = new Curso(
                     codigo,
-                   
                     $"CS: Intro a {carreras[random.Next(carreras.Length)].Split(' ')[0]}",
-                    random.Next(3, 6), // Créditos
+                    random.Next(3, 6),
                     profesores[random.Next(profesores.Count)]
                 );
                 _repoCursos.Agregar(c);
                 cursos.Add(c);
             }
 
+            // 4. GENERAR MATRÍCULAS Y CALIFICACIONES
             int matriculasRealizadas = 0;
             while (matriculasRealizadas < 35)
             {
@@ -625,39 +888,28 @@ public class ProgramaPrincipal
 
                 try
                 {
-                    // Intenta Matricular
                     _gestorMatriculas.MatricularEstudiante(est.Identificacion, cur.Identificacion);
                     matriculasRealizadas++;
 
-                    // Registra 3-4 Calificaciones por Matrícula
                     int numCalificaciones = random.Next(3, 5);
                     for (int k = 0; k < numCalificaciones; k++)
                     {
-                        // Generar calificaciones entre 5.0 y 10.0
                         decimal cal = Math.Round((decimal)(random.NextDouble() * 5.0 + 5.0), 1);
                         _gestorMatriculas.AgregarCalificacion(est.Identificacion, cur.Identificacion, cal);
                     }
                 }
-                catch (InvalidOperationException)
-                {
-                    // Captura el error de doble matrícula y continúa el ciclo.
-                }
-                catch (ArgumentException)
-                {
-                    // Captura errores si el objeto no se encuentra.
-                }
+                catch (InvalidOperationException) { }
+                catch (ArgumentException) { }
             }
         }
         catch (Exception ex)
         {
-            
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine($"\n[ERROR DE CARGA DE DATOS] Fallo durante la inicialización: {ex.Message}");
             Console.ResetColor();
         }
         finally
         {
-            
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("\n--- Carga de datos de prueba finalizada. ---");
             Console.WriteLine($"Total de estudiantes cargados: {_repoEstudiantes.ObtenerTodos().Count}");

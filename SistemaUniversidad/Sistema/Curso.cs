@@ -19,10 +19,10 @@ namespace SistemaUniversidad.Personas
         public string Identificacion => Codigo;
 
         [Requerido]
-        public string Nombre { get; private set; }
+        public string Nombre { get;  set; }
         
         [ValidacionRango(1, 10)]
-        public int Creditos { get; private set; }
+        public int Creditos { get; set; }
 
         public Profesor ProfesorAsignado { get; set; }
 
