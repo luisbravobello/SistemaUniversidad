@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-// NOTA: Se asume la existencia de TipoContrato, Validador, AnalizadorReflection, TiposEspeciales y demás clases.
+
 
 public class ProgramaPrincipal
 {
@@ -20,7 +20,7 @@ public class ProgramaPrincipal
 
     static ProgramaPrincipal()
     {
-        // Se incluyen los repositorios necesarios al Gestor de Matrículas
+       
         _gestorMatriculas = new GestorMatriculas(_repoEstudiantes, _repoCursos);
         CargarDatosDePruebaIniciales();
     }
@@ -28,13 +28,12 @@ public class ProgramaPrincipal
     public static void Main(string[] args)
     {
         bool continuar = true;
-        // Establecer la codificación para mostrar tildes y caracteres especiales correctamente
+   
         Console.OutputEncoding = System.Text.Encoding.UTF8;
 
-        // --- INICIO: Arte ASCII ---
         MostrarAsciiUniversidad();
         PausarConsola();
-        // -------------------------
+  
 
         while (continuar)
         {
@@ -55,7 +54,7 @@ public class ProgramaPrincipal
                     case "S":
                     case "8":
                         continuar = false;
-                        // Color para Salir del Sistema (Amarillo)
+                        
                         MostrarMensaje("Saliendo del sistema. ¡Hasta pronto!", ConsoleColor.Yellow);
                         break;
                     default:
@@ -66,16 +65,14 @@ public class ProgramaPrincipal
             }
             catch (Exception ex)
             {
-                // Manejo de excepción general
+                
                 MostrarMensaje($"\nERROR INESPERADO: {ex.Message}", ConsoleColor.Red);
                 PausarConsola();
             }
         }
     }
 
-    // =========================================================================
     // MÉTODOS DE UI Y UTILIDAD
-    // =========================================================================
 
     private static void MostrarAsciiUniversidad()
     {
@@ -98,7 +95,7 @@ public class ProgramaPrincipal
         Console.ResetColor();
     }
 
-
+    
     private static void MostrarMenuPrincipal()
     {
         Console.Clear();
@@ -137,22 +134,20 @@ public class ProgramaPrincipal
         return Console.ReadLine();
     }
 
-    // =========================================================================
-    // 1. GESTIÓN DE ESTUDIANTES (CRUD con colores)
-    // =========================================================================
-
+    // 1. GESTIÓN DE ESTUDIANTE
+ 
     private static void GestionarEstudiantes()
     {
         bool seguirGestionando = true;
         while (seguirGestionando) // ESTE ES EL BUCLE CONTINUO
         {
             Console.Clear();
-            MostrarMensaje("--- GESTIÓN DE ESTUDIANTES (CRUD) ---", ConsoleColor.Blue);
-            Console.WriteLine("1. Agregar Nuevo Estudiante (VERDE)"); // Agregar
-            Console.WriteLine("2. Listar Todos los Estudiantes (AMARILLO)"); // Leer
-            Console.WriteLine("3. Buscar Estudiante por ID (AMARILLO)"); // Leer
-            Console.WriteLine("4. Modificar Estudiante (AZUL)"); // Actualizar
-            Console.WriteLine("5. Eliminar Estudiante (ROJO)"); // Eliminar
+            MostrarMensaje("--- GESTIÓN DE ESTUDIANTES  ---", ConsoleColor.Blue);
+            Console.WriteLine("1. Agregar Nuevo Estudiante "); 
+            Console.WriteLine("2. Listar Todos los Estudiantes "); 
+            Console.WriteLine("3. Buscar Estudiante por ID "); 
+            Console.WriteLine("4. Modificar Estudiante "); 
+            Console.WriteLine("5. Eliminar Estudiante ");
             MostrarMensaje("6. <- Regresar al Menú Principal", ConsoleColor.DarkGray);
             Console.WriteLine(new string('-', 40));
             Console.Write("Opción de gestión: ");
@@ -203,9 +198,8 @@ public class ProgramaPrincipal
                 errores.ForEach(e => Console.WriteLine($" - {e}"));
                 return;
             }
-
             _repoEstudiantes.Agregar(nuevoEstudiante);
-            // Éxito en VERDE
+           
             MostrarMensaje($"Estudiante {nombre} {apellido} agregado con éxito.", ConsoleColor.Green);
         }
         catch (ArgumentException ex)
@@ -291,7 +285,7 @@ public class ProgramaPrincipal
             return;
         }
 
-        // Éxito en AZUL
+        
         MostrarMensaje($"Estudiante con ID {id} modificado exitosamente.", ConsoleColor.Blue);
     }
 
@@ -303,7 +297,7 @@ public class ProgramaPrincipal
         try
         {
             _repoEstudiantes.Eliminar(id);
-            // Éxito en ROJO
+            
             MostrarMensaje($"Estudiante con ID {id} eliminado exitosamente.", ConsoleColor.Red);
         }
         catch (KeyNotFoundException)
@@ -316,22 +310,20 @@ public class ProgramaPrincipal
         }
     }
 
-    // =========================================================================
-    // 2. GESTIÓN DE PROFESORES (CRUD con colores)
-    // =========================================================================
+    // 2. GESTIÓN DE PROFESORES 
 
     private static void GestionarProfesores()
     {
         bool seguirGestionando = true;
-        while (seguirGestionando) // ESTE ES EL BUCLE CONTINUO
+        while (seguirGestionando) 
         {
             Console.Clear();
             MostrarMensaje("--- GESTIÓN DE PROFESORES  ---", ConsoleColor.Blue);
-            Console.WriteLine("1. Agregar Nuevo Profesor (VERDE)");
-            Console.WriteLine("2. Listar Todos los Profesores (AMARILLO)");
-            Console.WriteLine("3. Buscar Profesor por ID (AMARILLO)");
-            Console.WriteLine("4. Modificar Profesor (AZUL)");
-            Console.WriteLine("5. Eliminar Profesor (ROJO)");
+            Console.WriteLine("1. Agregar Nuevo Profesor ");
+            Console.WriteLine("2. Listar Todos los Profesores ");
+            Console.WriteLine("3. Buscar Profesor por ID ");
+            Console.WriteLine("4. Modificar Profesor ");
+            Console.WriteLine("5. Eliminar Profesor");
             MostrarMensaje("6. <- Regresar al Menú Principal", ConsoleColor.DarkGray);
             Console.WriteLine(new string('-', 40));
             Console.Write("Opción de gestión: ");
@@ -359,6 +351,8 @@ public class ProgramaPrincipal
             }
         }
     }
+
+    // Metodo para agregar profesores
 
     private static void AgregarProfesor()
     {
@@ -396,7 +390,7 @@ public class ProgramaPrincipal
             }
 
             _repoProfesores.Agregar(nuevoProfesor);
-            // Éxito en VERDE
+           
             MostrarMensaje($"Profesor {nombre} {apellido} agregado con éxito.", ConsoleColor.Green);
         }
         catch (Exception ex)
@@ -404,6 +398,8 @@ public class ProgramaPrincipal
             MostrarMensaje($"Error al agregar profesor: {ex.Message}", ConsoleColor.Red);
         }
     }
+
+    // Metodo para listar profesores
 
     private static void ListarProfesores(bool pausa)
     {
@@ -427,6 +423,8 @@ public class ProgramaPrincipal
         }
     }
 
+    // Metodo para buscar profesores
+
     private static Profesor BuscarProfesor()
     {
         MostrarMensaje("\n--- BUSCAR PROFESOR ---", ConsoleColor.Yellow);
@@ -446,6 +444,8 @@ public class ProgramaPrincipal
             return null;
         }
     }
+   
+    // Metodo para modificar profesores
 
     private static void ModificarProfesor()
     {
@@ -475,9 +475,11 @@ public class ProgramaPrincipal
             return;
         }
 
-        // Éxito en AZUL
+        
         MostrarMensaje($"Profesor con ID {id} modificado exitosamente.", ConsoleColor.Blue);
     }
+
+    // Metodo para eliminar profesores
 
     private static void EliminarProfesor()
     {
@@ -487,7 +489,7 @@ public class ProgramaPrincipal
         try
         {
             _repoProfesores.Eliminar(id);
-            // Éxito en ROJO
+            
             MostrarMensaje($"Profesor con ID {id} eliminado exitosamente.", ConsoleColor.Red);
         }
         catch (KeyNotFoundException)
@@ -500,10 +502,8 @@ public class ProgramaPrincipal
         }
     }
 
-    // =========================================================================
-    // 3. GESTIÓN DE CURSOS (CRUD con colores)
-    // =========================================================================
-
+    // 3. GESTIÓN DE CURSOS 
+ 
     private static void GestionarCursos()
     {
         bool seguirGestionando = true;
@@ -511,11 +511,11 @@ public class ProgramaPrincipal
         {
             Console.Clear();
             MostrarMensaje("--- GESTIÓN DE CURSOS  ---", ConsoleColor.Blue);
-            Console.WriteLine("1. Agregar Nuevo Curso (VERDE)");
-            Console.WriteLine("2. Listar Todos los Cursos (AMARILLO)");
-            Console.WriteLine("3. Modificar Curso (AZUL)");
-            Console.WriteLine("4. Asignar Profesor (AZUL)");
-            Console.WriteLine("5. Eliminar Curso (ROJO)");
+            Console.WriteLine("1. Agregar Nuevo Curso ");
+            Console.WriteLine("2. Listar Todos los Cursos ");
+            Console.WriteLine("3. Modificar Curso ");
+            Console.WriteLine("4. Asignar Profesor ");
+            Console.WriteLine("5. Eliminar Curso ");
             MostrarMensaje("6. <- Regresar al Menú Principal", ConsoleColor.DarkGray);
             Console.WriteLine(new string('-', 40));
             Console.Write("Opción de gestión: ");
@@ -543,7 +543,8 @@ public class ProgramaPrincipal
             }
         }
     }
-
+    
+    //METODOS
     private static void AgregarCurso()
     {
         MostrarMensaje("\n--- AGREGAR CURSO ---", ConsoleColor.Green);
@@ -567,9 +568,8 @@ public class ProgramaPrincipal
                 errores.ForEach(e => Console.WriteLine($" - {e}"));
                 return;
             }
-
             _repoCursos.Agregar(nuevoCurso);
-            // Éxito en VERDE
+            
             MostrarMensaje($"Curso '{nombre}' agregado con éxito.", ConsoleColor.Green);
         }
         catch (Exception ex)
@@ -643,7 +643,7 @@ public class ProgramaPrincipal
             return;
         }
 
-        // Éxito en AZUL
+        
         MostrarMensaje($"Curso con código {codigo} modificado exitosamente.", ConsoleColor.Blue);
     }
 
@@ -675,7 +675,7 @@ public class ProgramaPrincipal
         }
 
         curso.ProfesorAsignado = profesor;
-        // Éxito en AZUL
+        
         MostrarMensaje($"Profesor {mensajeAsignacion} al curso {curso.Nombre}.", ConsoleColor.Blue);
     }
 
@@ -687,7 +687,7 @@ public class ProgramaPrincipal
         try
         {
             _repoCursos.Eliminar(id);
-            // Éxito en ROJO
+           
             MostrarMensaje($"Curso con código {id} eliminado exitosamente.", ConsoleColor.Red);
         }
         catch (KeyNotFoundException)
@@ -700,9 +700,7 @@ public class ProgramaPrincipal
         }
     }
 
-    // =========================================================================
-    // 4. MÉTODOS DEL MENÚ PRINCIPAL (Matrícula, Calificaciones, Reportes, Reflection)
-    // =========================================================================
+    // 4. MÉTODOS DEL MENÚ PRINCIPAL 
 
     private static void MatricularEstudianteEnCurso()
     {
@@ -714,7 +712,7 @@ public class ProgramaPrincipal
         try
         {
             _gestorMatriculas.MatricularEstudiante(idEstudiante, codigoCurso);
-            // Éxito en VERDE
+           
             MostrarMensaje("Matrícula realizada con éxito.", ConsoleColor.Green);
         }
         catch (InvalidOperationException ex)
@@ -747,10 +745,10 @@ public class ProgramaPrincipal
         try
         {
             _gestorMatriculas.AgregarCalificacion(idEstudiante, codigoCurso, calificacion.Value);
-            // Éxito en AZUL
+          
             MostrarMensaje($"Calificación {calificacion.Value} registrada con éxito.", ConsoleColor.Blue);
 
-            // Demostración de Boxing/Unboxing (Punto 5)
+            
             object objCalificacion = calificacion.Value; // Boxing
             decimal calDesboxeada = (decimal)objCalificacion; // Unboxing
             Console.WriteLine($"[DEBUG P5] Calificación boxeda/desboxeada: {calDesboxeada}");
@@ -770,7 +768,7 @@ public class ProgramaPrincipal
         Console.Clear();
         MostrarMensaje("--- REPORTES Y ESTADÍSTICAS (LINQ) ---", ConsoleColor.Magenta);
 
-        // 1. Reporte Individual
+        
         string idEstudiante = SolicitarEntrada("Ingrese ID del Estudiante para Reporte: ");
         Console.WriteLine("\n" + _gestorMatriculas.GenerarReporteEstudiante(idEstudiante));
 
@@ -808,10 +806,8 @@ public class ProgramaPrincipal
         }
     }
 
-    // =========================================================================
     // 5. DATOS DE PRUEBA
-    // =========================================================================
-
+ 
     private static void CargarDatosDePruebaIniciales()
     {
         var random = new Random();
