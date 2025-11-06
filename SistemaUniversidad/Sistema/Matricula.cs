@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 
 namespace SistemaUniversidad.Personas
 {
+
+    // Clase Matricula e Interfaz IEvaluable
     public class Matricula : IEvaluable
     {
         private const decimal CalificacionMinimaAprobacion = 7.0m;
@@ -25,11 +27,11 @@ namespace SistemaUniversidad.Personas
             Calificaciones = new List<decimal>();
         }
 
-        // --- Implementación de IEvaluable ---
+      
 
         public void AgregarCalificacion(decimal calificacion)
         {
-            // Validación requerida (asumiendo escala 0-10)
+            
             if (calificacion < 0m || calificacion > 10m)
                 throw new ArgumentOutOfRangeException(nameof(calificacion), "La calificación debe estar entre 0 y 10.");
 
@@ -38,7 +40,7 @@ namespace SistemaUniversidad.Personas
 
         public decimal ObtenerPromedio()
         {
-            // Retorna 0 si no hay calificaciones para evitar división por cero
+           
             if (!Calificaciones.Any())
                 return 0m;
 

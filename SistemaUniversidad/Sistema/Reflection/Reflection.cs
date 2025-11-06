@@ -7,22 +7,17 @@ using System.Threading.Tasks;
 
 namespace SistemaUniversidad.Sistema.Reflection
 {
-    using System;
-    using System.Reflection;
-    using System.Linq;
-    using System.Text;
-    using System.Collections.Generic; // Asegúrate de incluir esta
+    // Clase AnalizadorReflection
 
     public static class AnalizadorReflection
     {
-        // --- NUEVO: MostrarPropiedades(Type tipo) ---
         public static void MostrarPropiedades(Type tipo)
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine($"\n** PROPIEDADES PÚBLICAS de {tipo.Name} **");
             Console.ResetColor();
 
-            // Obtiene propiedades públicas de instancia, incluyendo las heredadas.
+            
             PropertyInfo[] propiedades = tipo.GetProperties(BindingFlags.Public | BindingFlags.Instance);
 
             foreach (var prop in propiedades)
@@ -31,7 +26,7 @@ namespace SistemaUniversidad.Sistema.Reflection
             }
         }
 
-        // --- NUEVO: MostrarMetodos(Type tipo) ---
+        // METODOS
         public static void MostrarMetodos(Type tipo)
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
@@ -52,7 +47,7 @@ namespace SistemaUniversidad.Sistema.Reflection
             }
         }
 
-        // --- EXISTENTE: CrearInstanciaDinamica ---
+        // Instancia Dinamica
         public static object CrearInstanciaDinamica(Type tipo, params object[] parametros)
         {
             Console.ForegroundColor = ConsoleColor.Cyan;
@@ -82,11 +77,10 @@ namespace SistemaUniversidad.Sistema.Reflection
             }
         }
 
-        // --- EXISTENTE: InvocarMetodo ---
+        // METODO INVOCAR
         public static object InvocarMetodo(object instancia, string nombreMetodo, params object[] parametros)
         {
-            // ... (Tu código de InvocarMetodo)
-            // (Se asume que la implementación existente está correcta)
+          
 
             if (instancia == null)
             {

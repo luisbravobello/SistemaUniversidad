@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SistemaUniversidad.Personas
 {
-
+    // CLASE BASE PERSONA
     public abstract partial class Persona : IIdentificable
     {
         // Campos privados para Encapsulación
@@ -119,14 +119,14 @@ namespace SistemaUniversidad.Personas
             return "Estudiante";
         }
 
-        // Sobrescritura de ToString() (opcional, mejora la visualización)
+        
         public override string ToString()
         {
             return base.ToString() + $" | Carrera: {Carrera} | Matrícula: {NumeroMatricula}";
         }
     }
 
-
+    // HERENCIA Profesor y Persona
     public class Profesor : Persona
     {
         private const int EdadMinimaProfesor = 25; // Requisito de validación
@@ -157,7 +157,7 @@ namespace SistemaUniversidad.Personas
             return "Profesor";
         }
 
-        // Sobrescritura de ToString() (opcional, mejora la visualización)
+        
         public override string ToString()
         {
             return base.ToString() + $" | Dpto: {Departamento} | Contrato: {TipoContrato} | Salario: {SalarioBase:C}";

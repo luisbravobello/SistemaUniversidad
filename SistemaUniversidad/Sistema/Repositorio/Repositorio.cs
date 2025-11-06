@@ -7,10 +7,13 @@ using System.Threading.Tasks;
 
 namespace SistemaUniversidad.Personas.Repositorio
 {
+    // Clase Repositorio genérico
     public class Repositorio<T> where T : IIdentificable
     {
         private readonly Dictionary<string, T> items = new Dictionary<string, T>();
 
+
+       //METODOS CRUD
         public void Agregar(T item)
         {
             if (items.ContainsKey(item.Identificacion))
@@ -29,12 +32,12 @@ namespace SistemaUniversidad.Personas.Repositorio
         
         public T BuscarPorId(string id)
         {
-            // Usa TryGetValue para buscar sin lanzar excepción si la clave no existe
+            
             if (items.TryGetValue(id, out T item))
             {
                 return item;
             }
-            // Retorna el valor por defecto de T (que es null para tipos de referencia/interfaz)
+            
             return default(T);
         }
 
@@ -47,7 +50,7 @@ namespace SistemaUniversidad.Personas.Repositorio
         
         public List<T> Buscar(Func<T, bool> predicado)
         {
-            // El método Where de LINQ utiliza el predicado para filtrar la colección
+            
             return items.Values.Where(predicado).ToList();
         }
 

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace SistemaUniversidad.Personas.Interfaz
 {
+    // Interfaz IEvaluable
     public interface IEvaluable
     {
         void AgregarCalificacion(decimal calificacion);

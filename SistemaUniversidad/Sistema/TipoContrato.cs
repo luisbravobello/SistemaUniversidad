@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace SistemaUniversidad.Personas
 {
+    // Enum TipoContrato
     public enum TipoContrato
     {
         TiempoCompleto,

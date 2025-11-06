@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SistemaUniversidad.Personas
 {
-   
+    // Clase Curso
     public partial class Curso : IIdentificable
     {
         [Requerido]

@@ -30,8 +30,7 @@ namespace SistemaUniversidad.Sistema
             return $"{idEstudiante}-{codigoCurso}".ToUpperInvariant();
         }
 
-        // --- Método Auxiliar LINQ (Necesario para las consultas) ---
-        // Calcula el promedio de promedios de todos los cursos de un estudiante.
+        // Metodo ObtenerPromedioGeneralEstudiante
         private decimal ObtenerPromedioGeneralEstudiante(string idEstudiante)
         {
             var matriculas = ObtenerMatriculasPorEstudiante(idEstudiante);
@@ -43,7 +42,7 @@ namespace SistemaUniversidad.Sistema
             return promediosValidos.Any() ? promediosValidos.Average() : 0m;
         }
 
-        // --- MÉTODOS DE GESTIÓN (Mantenidos de la estructura original) ---
+        // MÉTODOS DE GESTIÓN 
 
         public Matricula MatricularEstudiante(string idEstudiante, string codigoCurso)
         {
@@ -108,10 +107,7 @@ namespace SistemaUniversidad.Sistema
             return sb.ToString();
         }
 
-        // =====================================================================
-        // IMPLEMENTACIÓN DE CONSULTAS LINQ Y LAMBDA
-        // =====================================================================
-
+        //Metodos de Reportes Avanzados
         // 1. ObtenerTop10Estudiantes() - Top 10 por promedio general
         public List<(Estudiante Estudiante, decimal Promedio)> ObtenerTop10Estudiantes()
         {
@@ -145,18 +141,18 @@ namespace SistemaUniversidad.Sistema
                     Estudiante = e,
                     Promedio = ObtenerPromedioGeneralEstudiante(e.Identificacion)
                 })
-                // Filtrar por promedio > 0 Y promedio < 7.0
+                
                 .Where(x => x.Promedio > 0m && x.Promedio < limitePromedio)
                 .OrderBy(x => x.Promedio) // Ordenar del más bajo al más alto
                 .Select(x => (x.Estudiante, x.Promedio))
                 .ToList();
         }
 
-        // 3. ObtenerCursosMasPopulares() - Ordenados por cantidad de estudiantes
+        // 3. ObtenerCursosMasPopulares y  Ordenados por cantidad de estudiantes
         public List<(Curso Curso, int Conteo)> ObtenerCursosMasPopulares()
         {
             return _matriculas.Values
-                // Agrupar por el objeto Curso
+                
                 .GroupBy(m => m.Curso)
                 .Select(g => new
                 {
@@ -168,7 +164,7 @@ namespace SistemaUniversidad.Sistema
                 .ToList();
         }
 
-        // 4. ObtenerPromedioGeneral() - Promedio de todos los estudiantes
+        // 4. ObtenerPromedioGeneral y el Promedio de todos los estudiantes
         public decimal ObtenerPromedioGeneral()
         {
             var promediosEstudiantes = _matriculas.Values
@@ -180,7 +176,7 @@ namespace SistemaUniversidad.Sistema
             return promediosEstudiantes.Any() ? promediosEstudiantes.Average() : 0m;
         }
 
-        // 5. ObtenerEstadisticasPorCarrera() - Agrupar y mostrar: cantidad, promedio
+        // 5. Metodo ObtenerEstadisticasPorCarrera
         public List<object> ObtenerEstadisticasPorCarrera()
         {
             var estadisticas = _matriculas.Values
@@ -207,15 +203,15 @@ namespace SistemaUniversidad.Sistema
             return estadisticas;
         }
 
-        // 6. BuscarEstudiantes(Func<Estudiante, bool> criterio) - Búsqueda flexible con predicado
+        // 6. Metodo BuscarEstudiantes con Delegado Func<T, bool>
         public List<Estudiante> BuscarEstudiantes(Func<Estudiante, bool> criterio)
         {
-            // Obtener la colección única de estudiantes matriculados
+            
             var todosEstudiantes = _matriculas.Values
                 .Select(m => m.Estudiante)
                 .Distinct();
 
-            // Aplicar el Delegado Func<T, bool> (criterio/Lambda) para filtrar
+            
             return todosEstudiantes
                 .Where(criterio)
                 .ToList();

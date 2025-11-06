@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace SistemaUniversidad.Personas.Interfaz
 {
+    // Interfaz IIdentificable
     public interface IIdentificable
     {
-        // Propiedad de solo lectura requerida
+        
         string Identificacion { get; }
     }
 }

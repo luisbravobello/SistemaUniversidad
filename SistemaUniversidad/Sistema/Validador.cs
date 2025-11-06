@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace SistemaUniversidad.Sistema
 {
+    // Clase Validador
     public static class Validador
     {
         
@@ -31,7 +32,7 @@ namespace SistemaUniversidad.Sistema
                 object valor = prop.GetValue(instancia);
                 string nombrePropiedad = prop.Name;
 
-                // 1. Validar [Requerido]
+                // 1.  [Requerido]
                 if (prop.GetCustomAttribute<RequeridoAttribute>() != null)
                 {
                     if (valor == null || (valor is string s && string.IsNullOrWhiteSpace(s)))
@@ -60,7 +61,7 @@ namespace SistemaUniversidad.Sistema
                 var formatoAttr = prop.GetCustomAttribute<FormatoAttribute>();
                 if (formatoAttr != null && valor is string stringValue && !string.IsNullOrWhiteSpace(stringValue))
                 {
-                    // Usar Regex para validar el patrón
+                   
                     if (!Regex.IsMatch(stringValue, formatoAttr.PatronRegex))
                     {
                         errores.Add($"ERROR: '{nombrePropiedad}' ('{stringValue}') no cumple con el formato requerido ({formatoAttr.PatronRegex}).");
