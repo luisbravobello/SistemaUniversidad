@@ -78,9 +78,9 @@ public class ProgramaPrincipal
     {
         Console.Clear();
         Console.ForegroundColor = ConsoleColor.White;
-        Console.WriteLine("==================================================");
-        Console.WriteLine("    Universidad Central del Este (UCE)");
-        Console.WriteLine("==================================================");
+        Console.WriteLine("--------------------------------------------------");
+        Console.WriteLine("|    Universidad Central del Este (UCE)           |");
+        Console.WriteLine("--------------------------------------------------");
         Console.ForegroundColor = ConsoleColor.Green;
         Console.WriteLine(@"");
         Console.WriteLine(@"          ___          ___");
@@ -99,9 +99,9 @@ public class ProgramaPrincipal
     private static void MostrarMenuPrincipal()
     {
         Console.Clear();
-        Console.WriteLine(new string('=', 50));
+        Console.WriteLine("------------------------------------------");
         MostrarMensaje("      SISTEMA DE GESTIÓN ACADÉMICA UCE      ", ConsoleColor.Cyan);
-        Console.WriteLine(new string('=', 50));
+        Console.WriteLine("------------------------------------------");
         MostrarMensaje("1. Gestionar Estudiantes ", ConsoleColor.White);
         MostrarMensaje("2. Gestionar Profesores ", ConsoleColor.White);
         MostrarMensaje("3. Gestionar Cursos ", ConsoleColor.White);
@@ -110,7 +110,7 @@ public class ProgramaPrincipal
         MostrarMensaje("6. Ver Reportes", ConsoleColor.White);
         MostrarMensaje("7. Análisis con Reflection", ConsoleColor.White);
         MostrarMensaje("8. Salir", ConsoleColor.Red);
-        Console.WriteLine(new string('=', 50));
+        Console.WriteLine("--------------------------------------------");
         Console.Write("Seleccione una opción: ");
         Console.ResetColor();
     }
@@ -184,7 +184,7 @@ public class ProgramaPrincipal
             string id = SolicitarEntrada("ID (Ej: E123): ");
             string nombre = SolicitarEntrada("Nombre: ");
             string apellido = SolicitarEntrada("Apellido: ");
-            string fechaStr = SolicitarEntrada("Fecha Nacimiento (AAAA-MM-DD, edad >= 15): ");
+            string fechaStr = SolicitarEntrada("Fecha Nacimiento (AAAA-MM-DD):  ");
             DateTime fechaNac = DateTime.Parse(fechaStr);
             string carrera = SolicitarEntrada("Carrera: ");
             string matricula = SolicitarEntrada("Matrícula (Ej: M2024123): ");
@@ -362,7 +362,7 @@ public class ProgramaPrincipal
             string id = SolicitarEntrada("ID (Ej: P123): ");
             string nombre = SolicitarEntrada("Nombre: ");
             string apellido = SolicitarEntrada("Apellido: ");
-            string fechaStr = SolicitarEntrada("Fecha Nacimiento (AAAA-MM-DD, edad >= 25): ");
+            string fechaStr = SolicitarEntrada("Fecha Nacimiento (AAAA-MM-DD): ");
             DateTime fechaNac = DateTime.Parse(fechaStr);
             string departamento = SolicitarEntrada("Departamento: ");
 
@@ -651,7 +651,7 @@ public class ProgramaPrincipal
     {
         MostrarMensaje("\n--- ASIGNAR PROFESOR A CURSO ---", ConsoleColor.Blue);
         string codigoCurso = SolicitarEntrada("Código del Curso: ");
-        string idProfesor = SolicitarEntrada("ID del Profesor a asignar (Dejar vacío para quitar): ");
+        string idProfesor = SolicitarEntrada("ID del Profesor a asignar  ");
 
         var curso = _repoCursos.BuscarPorId(codigoCurso) as Curso;
         if (curso == null)
